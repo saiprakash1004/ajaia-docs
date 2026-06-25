@@ -20,6 +20,7 @@ export default function Home() {
   const [content, setContent] = useState("");
   const [shareEmail, setShareEmail] = useState("");
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
 
   async function loadDocs() {
     const { data: owned } = await supabase
@@ -114,6 +115,7 @@ export default function Home() {
     }
 
     setSelected(data);
+    setSelectedDocId(data.id);
     setTitle(data.title);
     setContent(data.content);
     loadDocs();
@@ -210,6 +212,7 @@ export default function Home() {
 
   function openDoc(doc: Doc) {
     setSelected(doc);
+    setSelectedDocId(doc.id);
     setTitle(doc.title);
     setContent(doc.content || "");
   }
@@ -231,6 +234,7 @@ export default function Home() {
             onChange={(e) => {
               setCurrentUser(e.target.value);
               setSelected(null);
+              setSelectedDocId(null);
             }}
           >
             {USERS.map((u) => (
@@ -243,7 +247,7 @@ export default function Home() {
           <aside className="col-span-3 rounded-xl bg-white p-4 shadow">
             <button
               onClick={createDoc}
-              className="mb-3 w-full rounded bg-black px-4 py-2 text-white"
+              className="mb-3 w-full cursor-pointer rounded bg-black px-4 py-2 text-white"
             >
               + New Document
             </button>
@@ -264,7 +268,11 @@ export default function Home() {
                 <button
                   key={doc.id}
                   onClick={() => openDoc(doc)}
-                  className="block w-full rounded border p-2 text-left hover:bg-slate-100"
+                  className={`block w-full cursor-pointer rounded border p-2 text-left transition ${
+                    selectedDocId === doc.id
+                      ? "border-blue-700 bg-blue-200 shadow-sm"
+                      : "border-slate-200 bg-white hover:bg-slate-100"
+                  }`}
                 >
                   <div className="font-medium">{doc.title}</div>
                   <div className="text-xs text-slate-500">Owner: you</div>
@@ -278,7 +286,11 @@ export default function Home() {
                 <button
                   key={doc.id}
                   onClick={() => openDoc(doc)}
-                  className="block w-full rounded border p-2 text-left hover:bg-slate-100"
+                  className={`block w-full cursor-pointer rounded border p-2 text-left transition ${
+                    selectedDocId === doc.id
+                      ? "border-blue-700 bg-blue-200 shadow-sm"
+                      : "border-slate-200 bg-white hover:bg-slate-100"
+                  }`}
                 >
                   <div className="font-medium">{doc.title}</div>
                   <div className="text-xs text-slate-500">
@@ -305,14 +317,14 @@ export default function Home() {
 
                   <button
                     onClick={saveDoc}
-                    className="rounded bg-blue-600 px-4 py-2 text-white"
+                    className="cursor-pointer rounded bg-blue-600 px-4 py-2 text-white"
                   >
                     Save
                   </button>
 
                   <button
                     onClick={exportMarkdown}
-                    className="rounded bg-slate-700 px-4 py-2 text-white"
+                    className="cursor-pointer rounded bg-slate-700 px-4 py-2 text-white"
                   >
                     Export .md
                   </button>
