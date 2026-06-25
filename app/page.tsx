@@ -21,6 +21,7 @@ export default function Home() {
   const [shareEmail, setShareEmail] = useState("");
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
+  const [availableUsers, setAvailableUsers] = useState<string[]>(USERS);
 
   async function loadDocs() {
     const { data: owned } = await supabase
@@ -60,8 +61,26 @@ export default function Home() {
     }
   }
 
+  async function loadAvailableUsers() {
+    const { data: docsData } = await supabase
+      .from("documents")
+      .select("owner_email");
+
+    const { data: sharesData } = await supabase
+      .from("document_shares")
+      .select("shared_with_email");
+
+    const emails = new Set<string>(USERS);
+
+    docsData?.forEach((d) => emails.add(d.owner_email));
+    sharesData?.forEach((s) => emails.add(s.shared_with_email));
+
+    setAvailableUsers(Array.from(emails));
+  }
+
   useEffect(() => {
     loadDocs();
+    loadAvailableUsers();
   }, [currentUser]);
 
   useEffect(() => {
@@ -181,6 +200,8 @@ export default function Home() {
 
     setShareEmail("");
     alert("Document shared");
+    loadAvailableUsers();
+    loadDocs();
   }
 
   async function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -237,7 +258,7 @@ export default function Home() {
               setSelectedDocId(null);
             }}
           >
-            {USERS.map((u) => (
+            {availableUsers.map((u) => (
               <option key={u}>{u}</option>
             ))}
           </select>
