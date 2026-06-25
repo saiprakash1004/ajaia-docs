@@ -60,8 +60,8 @@ Create
 Add
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=YOUR_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_KEY
+NEXT_PUBLIC_SUPABASE_URL=https://xzakeovvkjhfbjbvwdmb.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6YWtlb3Z2a2poZmJqYnZ3ZG1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzODUzODksImV4cCI6MjA5Nzk2MTM4OX0.7LyyqoA_UtTPsLyCmd2e4SbeMcnImbTelK6R3-WaxTg
 ```
 
 Run
@@ -88,4 +88,4 @@ npm run test
 
 ## Live Demo
 
-https://YOUR-VERCEL-LINK.vercel.app
+https://ajaia-docs-mocha.vercel.app/

@@ -225,10 +225,16 @@ export default function Home() {
       return;
     }
 
+    setDocs((prev) => [data, ...prev]);
     setSelected(data);
+    setSelectedDocId(data.id);
     setTitle(data.title);
     setContent(data.content);
-    loadDocs();
+    setSaveStatus("saved");
+
+    await loadAvailableUsers();
+
+    e.target.value = "";
   }
 
   function openDoc(doc: Doc) {
@@ -356,7 +362,11 @@ export default function Home() {
                   </span>
                 </div>
 
-                <RichTextEditor content={content} onChange={setContent} />
+                <RichTextEditor
+                  key={selectedDocId}
+                  content={content}
+                  onChange={setContent}
+                />
 
                 <div className="mt-5 rounded border p-4">
                   <h3 className="mb-2 font-semibold">Sharing</h3>
