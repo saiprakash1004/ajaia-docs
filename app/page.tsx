@@ -350,7 +350,7 @@ export default function Home() {
                       />
                       <button
                         onClick={shareDoc}
-                        className="rounded bg-slate-900 px-4 py-2 text-white"
+                        className="cursor-pointer rounded bg-slate-900 px-4 py-2 text-white"
                       >
                         Share
                       </button>
